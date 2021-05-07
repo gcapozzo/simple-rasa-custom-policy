@@ -6,4 +6,4 @@
 **/events.db-wal
 **/rasa.db 
 **/credentials.yml
-**/custom_policies/__pycache__
+**/__pycache__
