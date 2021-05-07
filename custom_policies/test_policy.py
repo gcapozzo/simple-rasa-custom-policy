@@ -30,6 +30,16 @@ MAX_HISTORY_NOT_SET = -1
 OLD_DEFAULT_MAX_HISTORY = 5
 
 class TestPolicy(Policy):
+    def __init__(
+        self,
+        featurizer: Optional[TrackerFeaturizer] = None,
+        priority: int = MEMOIZATION_POLICY_PRIORITY,
+        answered: Optional[bool] = None,
+        **kwargs: Any,
+        ) -> None:
+        super().__init__(featurizer, priority, **kwargs)
+        self.answered = False
+
     def train(
         self,
         training_trackers: List[TrackerWithCachedStates],
@@ -46,6 +56,7 @@ class TestPolicy(Policy):
             interpreter: Interpreter which can be used by the polices for featurization.
         """
         pass
+
     def predict_action_probabilities(
         self,
         tracker: DialogueStateTracker,
@@ -54,7 +65,11 @@ class TestPolicy(Policy):
         **kwargs: Any,
     ) -> PolicyPrediction:
         result = self._default_predictions(domain)
-        result[13] = 1.0
+        if not self.answered:
+            result[13] = 1.0
+            self.answered = True
+        else:
+            self.answered = False
         print(result)
         return self._prediction(result)
         """Predicts the next action the bot should take after seeing the tracker.
