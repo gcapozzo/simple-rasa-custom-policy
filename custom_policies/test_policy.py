@@ -65,6 +65,8 @@ class TestPolicy(Policy):
         **kwargs: Any,
     ) -> PolicyPrediction:
         result = self._default_predictions(domain)
+        tracker.past_states
+        print(domain.action_names)
         if not self.answered:
             result[13] = 1.0
             self.answered = True

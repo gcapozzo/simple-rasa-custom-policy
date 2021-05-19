@@ -7,3 +7,4 @@
 **/rasa.db 
 **/credentials.yml
 **/__pycache__
+*.dot
