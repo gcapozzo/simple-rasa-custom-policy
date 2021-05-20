@@ -5,6 +5,12 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
+- greet
+- mood_happy
+- mood_unhappy
+- affirm
+- deny
+- mood_great
 - saludar
 - afirmar
 - poseer_conocimiento
@@ -12,6 +18,8 @@ intents:
 - negar
 - no_entender
 - repreguntar
+- goodbye
+- bot_challenge
 #- bot_challenge:
 #    use_entities: true
 #- bot_challenge:
@@ -22,6 +30,18 @@ intents:
 entities: []
 slots: {}
 responses:
+  utter_greet:
+  - text: ""
+  utter_happy:
+  - text: ""
+  utter_cheer_up:
+  - text: ""
+  utter_did_that_help:
+  - text: ""
+  utter_goodbye:
+  - text: ""
+  utter_saludar:
+  - text: Hola
   utter_requerimientos_a_priorizar:
   - text: Al principio de cada Sprint se realiza la ceremonia PI planning, donde se seleccionan los requerimientos de acuerdo a la prioridad que quiera darle el cliente.
   utter_presencia_del_cliente:
@@ -30,6 +50,6 @@ responses:
   - text: Dentro de esta ceremonia deben estar presentes todos los integrantes del equipo de desarrollo.
   utter_que_tiene_el_sprint_planning:
   - text: Esta ceremonia es muy importante, ya que en ella se toman los requerimientos seleccionados por el cliente, y se los desglosa hasta obtener user stories.
-  actions: []
+actions: []
 forms: {}
 e2e_actions: []
