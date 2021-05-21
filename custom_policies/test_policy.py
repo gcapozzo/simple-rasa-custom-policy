@@ -56,16 +56,27 @@ class TestPolicy(Policy):
             for t in training_trackers
             if not hasattr(t, "is_augmented") or not t.is_augmented
         ]
+        stories = {}
         for s in training_trackers:
             # initialize dict with intents as keys and 0 counts in each history
-            story_intents = dict.fromkeys(domain.intents, 0)
-            for t in s.events:
-                if isinstance(t, events.UserUttered):
-                    intent = t.as_dict().get('parse_data').get('intent').get('name')
-                    story_intents[intent] = story_intents[intent] + 1
-            print(story_intents)
-            self.story_profiles.append(story_intents)
-            # todo: transform results to probabilities
+            if s.as_dialogue().as_dict().get('name') not in stories.keys():
+                story_intents = dict.fromkeys(domain.intents, 0)
+                stories.update({s.as_dialogue().as_dict().get('name'):story_intents})
+                for t in s.events:
+                    if isinstance(t, events.UserUttered):
+                        intent = t.as_dict().get('parse_data').get('intent').get('name')
+                        story_intents[intent] = story_intents[intent] + 1
+            else:
+                aux_intents = stories.get(s.as_dialogue().as_dict().get('name'))
+                for t in s.events:
+                    if isinstance(t, events.UserUttered):
+                        intent = t.as_dict().get('parse_data').get('intent').get('name')
+                        aux_intents[intent] = aux_intents[intent] + 1
+                stories.update({s.as_dialogue().as_dict().get('name'):aux_intents})
+                #print(s.as_dialogue().as_dict().get('name'))
+        print(stories)
+        self.story_profiles.append(stories)
+                # todo: transform results to probabilities
         """Trains the policy on given training trackers.
 
         Args:
