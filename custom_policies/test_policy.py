@@ -43,6 +43,15 @@ class TestPolicy(Policy):
         self.story_profiles = story_profiles if story_profiles is not None else []
         self.usertype = 0.0
 
+    def count_intents_from_stories(self,s,story_intents):
+        count_intents = 0
+        for t in s.events:
+            if isinstance(t, events.UserUttered):
+                intent = t.as_dict().get('parse_data').get('intent').get('name')
+                story_intents[intent] = story_intents[intent] + 1
+                count_intents = count_intents + 1
+        return count_intents
+
     def train(
             self,
             training_trackers: List[TrackerWithCachedStates],
@@ -57,26 +66,30 @@ class TestPolicy(Policy):
             if not hasattr(t, "is_augmented") or not t.is_augmented
         ]
         stories = {}
+        amount_intents = {}
         for s in training_trackers:
+            story_name = s.as_dialogue().as_dict().get('name')
             # initialize dict with intents as keys and 0 counts in each history
-            if s.as_dialogue().as_dict().get('name') not in stories.keys():
+            if story_name not in stories.keys():
                 story_intents = dict.fromkeys(domain.intents, 0)
-                stories.update({s.as_dialogue().as_dict().get('name'):story_intents})
-                for t in s.events:
-                    if isinstance(t, events.UserUttered):
-                        intent = t.as_dict().get('parse_data').get('intent').get('name')
-                        story_intents[intent] = story_intents[intent] + 1
+                stories.update({story_name: story_intents})
+                count_intents = self.count_intents_from_stories(s, story_intents)
+                amount_intents.update({story_name: count_intents})
             else:
-                aux_intents = stories.get(s.as_dialogue().as_dict().get('name'))
-                for t in s.events:
-                    if isinstance(t, events.UserUttered):
-                        intent = t.as_dict().get('parse_data').get('intent').get('name')
-                        aux_intents[intent] = aux_intents[intent] + 1
-                stories.update({s.as_dialogue().as_dict().get('name'):aux_intents})
-                #print(s.as_dialogue().as_dict().get('name'))
+                aux_intents = stories.get(story_name)
+                count_intents = amount_intents.get(story_name) + self.count_intents_from_stories(s, story_intents)
+                amount_intents.update({story_name: count_intents})
+                stories.update({story_name: aux_intents})
+
+        for story_name in stories:
+            for intent in stories.get(story_name):
+                stories.get(story_name).update({
+                    intent: stories.get(story_name).get(intent) / amount_intents.get(story_name)
+                })
+
         print(stories)
+        print(amount_intents)
         self.story_profiles.append(stories)
-                # todo: transform results to probabilities
         """Trains the policy on given training trackers.
 
         Args:
