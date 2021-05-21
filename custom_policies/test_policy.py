@@ -1,4 +1,4 @@
-import zlib
+from datetime import datetime
 
 import base64
 import json
@@ -32,31 +32,35 @@ OLD_DEFAULT_MAX_HISTORY = 5
 BESTY_POLICY_PRIORITY = 10
 DEFAULT_LEARNING_STYLE = 'global'
 
+
+def count_intents_from_stories(s, story_intents):
+    # this function counts the amount of intents in a story and update the ocurrences of
+    # an intent in a story
+    count_intents = 0
+    for t in s.events:
+        if isinstance(t, events.UserUttered):
+            intent = t.as_dict().get('parse_data').get('intent').get('name')
+            story_intents[intent] = story_intents[intent] + 1
+            count_intents = count_intents + 1
+    return count_intents
+
+
 class TestPolicy(Policy):
+    last_action_timestamp = 0
+
     def __init__(
             self,
             featurizer: Optional[TrackerFeaturizer] = None,
             priority: int = BESTY_POLICY_PRIORITY,
             usertype: Optional[dict] = None,
             story_profiles: Optional[dict] = None,
-            learning_style: Optional[str] = None, 
+            learning_style: Optional[str] = None,
             **kwargs: Any,
     ) -> None:
         super().__init__(featurizer, priority, **kwargs)
         self.story_profiles = story_profiles if story_profiles is not None else {}
         self.usertype = usertype if usertype is not None else {}
         self.learning_style = learning_style if learning_style is not None else DEFAULT_LEARNING_STYLE
-
-    def count_intents_from_stories(self,s,story_intents):
-        # this function counts the amount of intents in a story and update the ocurrences of
-        # an intent in a story
-        count_intents = 0
-        for t in s.events:
-            if isinstance(t, events.UserUttered):
-                intent = t.as_dict().get('parse_data').get('intent').get('name')
-                story_intents[intent] = story_intents[intent] + 1
-                count_intents = count_intents + 1
-        return count_intents
 
     def train(
             self,
@@ -80,13 +84,13 @@ class TestPolicy(Policy):
                 # if the story does not exist, is added to the dictionary and the ocurrences of intents are updated
                 story_intents = dict.fromkeys(domain.intents, 0)
                 stories.update({story_name: story_intents})
-                count_intents = self.count_intents_from_stories(s, story_intents)
+                count_intents = count_intents_from_stories(s, story_intents)
                 amount_intents.update({story_name: count_intents})
                 self.usertype.update({story_name: 0.0})
             else:
                 # if the story already exists, is updated in the dictionary and the ocurrences of intents are added
                 aux_intents = stories.get(story_name)
-                count_intents = amount_intents.get(story_name) + self.count_intents_from_stories(s, story_intents)
+                count_intents = amount_intents.get(story_name) + count_intents_from_stories(s, story_intents)
                 amount_intents.update({story_name: count_intents})
                 stories.update({story_name: aux_intents})
 
@@ -123,14 +127,17 @@ class TestPolicy(Policy):
             self.usertype.update({s: self.usertype.get(s) + self.story_profiles.get(s).get(intent)})
         aux = 0.0
         for s in self.usertype:
-            if (aux<self.usertype.get(s) and self.usertype.get(s)>2):
-                self.learning_style= s
+            if aux < self.usertype.get(s) and self.usertype.get(s) > 2:
+                self.learning_style = s
         print(self.story_profiles)
         print('')
         print(self.learning_style)
         print('')
         print(self.usertype)
         response = "utter_saludar"
+        print('Respuesta del bot a los: '+str(self.last_action_timestamp))
+        print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['timestamp'])
+        self.last_action_timestamp = datetime.now()
         if tracker.latest_action['action_name'] == 'action_listen':
             return self._prediction(confidence_scores_for(response, 1.0, domain))
         if tracker.last_executed_action_has(response, skip=0):
