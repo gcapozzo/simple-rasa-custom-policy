@@ -44,6 +44,8 @@ class TestPolicy(Policy):
         self.usertype = 0.0
 
     def count_intents_from_stories(self,s,story_intents):
+        # this function counts the amount of intents in a story and update the ocurrences of
+        # an intent in a story
         count_intents = 0
         for t in s.events:
             if isinstance(t, events.UserUttered):
@@ -71,16 +73,19 @@ class TestPolicy(Policy):
             story_name = s.as_dialogue().as_dict().get('name')
             # initialize dict with intents as keys and 0 counts in each history
             if story_name not in stories.keys():
+                # if the story does not exist, is added to the dictionary and the ocurrences of intents are updated
                 story_intents = dict.fromkeys(domain.intents, 0)
                 stories.update({story_name: story_intents})
                 count_intents = self.count_intents_from_stories(s, story_intents)
                 amount_intents.update({story_name: count_intents})
             else:
+                # if the story already exists, is updated in the dictionary and the ocurrences of intents are added
                 aux_intents = stories.get(story_name)
                 count_intents = amount_intents.get(story_name) + self.count_intents_from_stories(s, story_intents)
                 amount_intents.update({story_name: count_intents})
                 stories.update({story_name: aux_intents})
 
+        # here the training calculates the probability of ocurrence of each intent for each learning style
         for story_name in stories:
             for intent in stories.get(story_name):
                 stories.get(story_name).update({
