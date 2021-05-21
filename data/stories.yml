@@ -10,7 +10,7 @@ stories:
 
 - story: secuencial
   steps:
-  - intent: greet
+  - intent: avanzar_conversacion
   - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
@@ -20,7 +20,7 @@ stories:
 
 - story: secuencial
   steps:
-  - intent: greet
+  - intent: avanzar_conversacion
   - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up

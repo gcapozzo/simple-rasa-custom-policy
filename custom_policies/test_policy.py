@@ -3,6 +3,7 @@ import zlib
 import base64
 import json
 import logging
+from rasa.shared.core import domain
 
 from tqdm import tqdm
 from typing import Optional, Any, Dict, List, Text
@@ -28,20 +29,23 @@ logger = logging.getLogger(__name__)
 # temporary constants to support back compatibility
 MAX_HISTORY_NOT_SET = -1
 OLD_DEFAULT_MAX_HISTORY = 5
-
+BESTY_POLICY_PRIORITY = 10
+DEFAULT_LEARNING_STYLE = 'global'
 
 class TestPolicy(Policy):
     def __init__(
             self,
             featurizer: Optional[TrackerFeaturizer] = None,
-            priority: int = MEMOIZATION_POLICY_PRIORITY,
-            usertype: Optional[float] = None,
-            story_profiles: Optional[List] = None,
+            priority: int = BESTY_POLICY_PRIORITY,
+            usertype: Optional[dict] = None,
+            story_profiles: Optional[dict] = None,
+            learning_style: Optional[str] = None, 
             **kwargs: Any,
     ) -> None:
         super().__init__(featurizer, priority, **kwargs)
-        self.story_profiles = story_profiles if story_profiles is not None else []
-        self.usertype = 0.0
+        self.story_profiles = story_profiles if story_profiles is not None else {}
+        self.usertype = usertype if usertype is not None else {}
+        self.learning_style = learning_style if learning_style is not None else DEFAULT_LEARNING_STYLE
 
     def count_intents_from_stories(self,s,story_intents):
         # this function counts the amount of intents in a story and update the ocurrences of
@@ -78,6 +82,7 @@ class TestPolicy(Policy):
                 stories.update({story_name: story_intents})
                 count_intents = self.count_intents_from_stories(s, story_intents)
                 amount_intents.update({story_name: count_intents})
+                self.usertype.update({story_name: 0.0})
             else:
                 # if the story already exists, is updated in the dictionary and the ocurrences of intents are added
                 aux_intents = stories.get(story_name)
@@ -91,10 +96,11 @@ class TestPolicy(Policy):
                 stories.get(story_name).update({
                     intent: stories.get(story_name).get(intent) / amount_intents.get(story_name)
                 })
-
+        print(self.usertype)
         print(stories)
         print(amount_intents)
-        self.story_profiles.append(stories)
+        self.story_profiles.update(stories)
+        print(self.story_profiles)
         """Trains the policy on given training trackers.
 
         Args:
@@ -112,8 +118,19 @@ class TestPolicy(Policy):
             interpreter: NaturalLanguageInterpreter,
             **kwargs: Any,
     ) -> PolicyPrediction:
-        print(tracker.latest_message.intent.get('name'))
+        intent = tracker.latest_message.intent.get('name')
+        print(self.story_profiles)
+        #
+        for s in self.usertype:
+            self.usertype.update({s: self.usertype.get(s) + self.story_profiles.get(s).get(intent)})
+        #
+        aux = 0.0
+        for s in self.usertype:
+            if (aux<self.usertype.get(s) and self.usertype.get(s)>2):
+                self.learning_style= s
+        print(self.learning_style)
         print(tracker.latest_action)
+        print(self.usertype)
         response = "utter_saludar"
         if tracker.latest_action['action_name'] == 'action_listen':
             return self._prediction(confidence_scores_for(response, 1.0, domain))
@@ -124,7 +141,8 @@ class TestPolicy(Policy):
     def _metadata(self) -> Dict[Text, Any]:
         return {
             "priority": self.priority,
-            "story_profiles": self.story_profiles
+            "story_profiles": self.story_profiles,
+            "usertype": self.usertype
         }
 
     @classmethod
