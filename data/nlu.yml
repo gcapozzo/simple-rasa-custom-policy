@@ -2,18 +2,6 @@ version: "2.0"
 
 nlu:
 
-- intent: greet
-  examples: |
-- intent: mood_happy
-  examples: |
-- intent: mood_unhappy
-  examples: |
-- intent: affirm
-  examples: |
-- intent: deny
-  examples: |
-- intent: mood_great
-  examples: |
 - intent: saludar
   examples: |
     - hola
@@ -56,13 +44,3 @@ nlu:
   examples: |
     - esto ya lo se
     - ya conozco de esto
-
-- intent: bot_challenge
-  examples: |
-    - eres un bot
-    - sos un bot
-
-- intent: goodbye
-  examples: |
-    - bye
-    - ciao

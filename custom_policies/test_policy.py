@@ -119,17 +119,16 @@ class TestPolicy(Policy):
             **kwargs: Any,
     ) -> PolicyPrediction:
         intent = tracker.latest_message.intent.get('name')
-        print(self.story_profiles)
-        #
         for s in self.usertype:
             self.usertype.update({s: self.usertype.get(s) + self.story_profiles.get(s).get(intent)})
-        #
         aux = 0.0
         for s in self.usertype:
             if (aux<self.usertype.get(s) and self.usertype.get(s)>2):
                 self.learning_style= s
+        print(self.story_profiles)
+        print('')
         print(self.learning_style)
-        print(tracker.latest_action)
+        print('')
         print(self.usertype)
         response = "utter_saludar"
         if tracker.latest_action['action_name'] == 'action_listen':
