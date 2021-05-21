@@ -3,27 +3,56 @@ version: "2.0"
 stories:
 - story: global
   steps:
-  - intent: 
-  - action: 
-  - intent: 
-  - action: 
+  - intent: pedir_tema
+  - action: utter_global_tema1
+  - intent: avanzar_conversacion
+  - action: utter_global_tema2
+  - intent: pedir_tema
+  - action: utter_global_tema3
+  - intent: avanzar_conversacion
+  - action: utter_global_tema4
+  - intent: avanzar_conversacion
+  - action: utter_global_tema5
 
 - story: secuencial
   steps:
+  - intent: pedir_tema
+  - action: utter_secuencial_tema1
   - intent: avanzar_conversacion
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+  - action: utter_secuencial_tema2
+  - intent: repreguntar
+  - action: utter_secuencial_tema2
+  - intent: avanzar_conversacion
+  - action: utter_secuencial_tema4
+  - intent: repreguntar
+  - action: utter_secuencial_tema4
+  - intent: repreguntar
+  - action: utter_secuencial_tema4
 
 - story: secuencial
   steps:
+  - intent: pedir_tema
+  - action: utter_secuencial_tema1
+  - intent: no_entender
+  - action: utter_secuencial_tema1
+  - intent: repreguntar
+  - action: utter_secuencial_tema1
   - intent: avanzar_conversacion
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+  - action: utter_secuencial_tema4
+  - intent: no_entender
+  - action: utter_secuencial_tema4
+  - intent: repreguntar
+  - action: utter_secuencial_tema4
+
+- story: global
+  steps:
+  - intent: pedir_tema
+  - action: utter_global_tema1
+  - intent: avanzar_conversacion
+  - action: utter_global_tema2
+  - intent: pedir_tema
+  - action: utter_global_tema3
+  - intent: avanzar_conversacion
+  - action: utter_global_tema4
+  - intent: repreguntar
+  - action: utter_global_tema4

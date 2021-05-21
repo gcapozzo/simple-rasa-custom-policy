@@ -30,7 +30,8 @@ logger = logging.getLogger(__name__)
 MAX_HISTORY_NOT_SET = -1
 OLD_DEFAULT_MAX_HISTORY = 5
 BESTY_POLICY_PRIORITY = 10
-DEFAULT_LEARNING_STYLE = 'global'
+DEFAULT_LEARNING_STYLE = 'secuencial'
+LEARNING_STYLE_CONFIDENCE = 1
 
 
 def count_intents_from_stories(s, story_intents):
@@ -47,7 +48,7 @@ def count_intents_from_stories(s, story_intents):
 
 class TestPolicy(Policy):
     last_action_timestamp = 0
-
+    answered = False
     def __init__(
             self,
             featurizer: Optional[TrackerFeaturizer] = None,
@@ -83,14 +84,14 @@ class TestPolicy(Policy):
             if story_name not in stories.keys():
                 # if the story does not exist, is added to the dictionary and the ocurrences of intents are updated
                 story_intents = dict.fromkeys(domain.intents, 0)
-                stories.update({story_name: story_intents})
                 count_intents = count_intents_from_stories(s, story_intents)
+                stories.update({story_name: story_intents})
                 amount_intents.update({story_name: count_intents})
                 self.usertype.update({story_name: 0.0})
             else:
                 # if the story already exists, is updated in the dictionary and the ocurrences of intents are added
                 aux_intents = stories.get(story_name)
-                count_intents = amount_intents.get(story_name) + count_intents_from_stories(s, story_intents)
+                count_intents = amount_intents.get(story_name) + count_intents_from_stories(s, aux_intents)
                 amount_intents.update({story_name: count_intents})
                 stories.update({story_name: aux_intents})
 
@@ -122,27 +123,30 @@ class TestPolicy(Policy):
             interpreter: NaturalLanguageInterpreter,
             **kwargs: Any,
     ) -> PolicyPrediction:
+        if self.answered:
+            self.answered= False
+            return self._prediction(confidence_scores_for("action_listen", 1.0, domain))
         intent = tracker.latest_message.intent.get('name')
         for s in self.usertype:
             self.usertype.update({s: self.usertype.get(s) + self.story_profiles.get(s).get(intent)})
-        aux = 0.0
+        aux_ls = 0.0
         for s in self.usertype:
-            if aux < self.usertype.get(s) and self.usertype.get(s) > 2:
+            if aux_ls < self.usertype.get(s) and self.usertype.get(s) > LEARNING_STYLE_CONFIDENCE:
+                aux_ls = self.usertype.get(s)
                 self.learning_style = s
         print(self.story_profiles)
         print('')
         print(self.learning_style)
         print('')
         print(self.usertype)
-        response = "utter_saludar"
-        print('Respuesta del bot a los: '+str(self.last_action_timestamp))
-        print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['timestamp'])
-        self.last_action_timestamp = datetime.now()
-        if tracker.latest_action['action_name'] == 'action_listen':
-            return self._prediction(confidence_scores_for(response, 1.0, domain))
-        if tracker.last_executed_action_has(response, skip=0):
-            return self._prediction(confidence_scores_for("action_listen", 1.0, domain))
-        return self._prediction(self._default_predictions(domain))
+        response = 'utter_' + self.learning_style+'_' + str(tracker.slots.get('tema').value)
+        self.answered = True
+        #print('Respuesta del bot a los: '+str(self.last_action_timestamp))
+        #print(tracker.latest_message.parse_data)
+        #print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['time_stamp'])
+        #self.last_action_timestamp = datetime.now()       
+        return self._prediction(confidence_scores_for(response, 1.0, domain))
+
 
     def _metadata(self) -> Dict[Text, Any]:
         return {

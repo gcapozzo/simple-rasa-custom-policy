@@ -8,6 +8,7 @@ intents:
 - negar
 - avanzar_conversacion
 - poseer_conocimiento
+- pedir_tema
 
 entities: 
 - tema
@@ -19,8 +20,26 @@ slots:
 responses:
   utter_saludar:
   - text: "hola"
-  utter_tema_
-
+  utter_global_tema1:
+  - text: "explicacion global del tema 1"
+  utter_global_tema2:
+  - text: "explicacion global del tema 2"
+  utter_global_tema3:
+  - text: "explicacion global del tema 3"
+  utter_global_tema4:
+  - text: "explicacion global del tema 4"
+  utter_global_tema5:
+  - text: "explicacion global del tema 5"
+  utter_secuencial_tema1:
+  - text: "explicacion secuencial del tema 1"
+  utter_secuencial_tema2:
+  - text: "explicacion secuencial del tema 2"
+  utter_secuencial_tema3:
+  - text: "explicacion secuencial del tema 3"
+  utter_secuencial_tema4:
+  - text: "explicacion secuencial del tema 4"
+  utter_secuencial_tema5:
+  - text: "explicacion secuencial del tema 5"
 config:
   store_entities_as_slots: true
 session_config:

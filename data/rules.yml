@@ -2,12 +2,7 @@ version: "2.0"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: saludar
   steps:
-  - intent: goodbye
-  - action: utter_saludar
-
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
+  - intent: saludar
   - action: utter_saludar

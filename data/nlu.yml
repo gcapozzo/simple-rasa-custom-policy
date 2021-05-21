@@ -35,12 +35,16 @@ nlu:
 
 - intent: avanzar_conversacion
   examples: |
-    - que sigue
-    - y como sigue
-    - cual es lo proximo
-    - que es lo proximo
+    - y como sigue [tema1](tema)
+    - pasemos a [tema2](tema)
+    - ahora explicame [tema3](tema)
 
 - intent: poseer_conocimiento
   examples: |
     - esto ya lo se
     - ya conozco de esto
+
+- intent: pedir_tema
+  examples: |
+    - contame de [tema4](tema)
+    - explicame que es [tema5](tema)
