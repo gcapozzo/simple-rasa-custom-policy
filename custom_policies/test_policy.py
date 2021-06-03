@@ -49,6 +49,7 @@ def count_intents_from_stories(s, story_intents):
 class TestPolicy(Policy):
     last_action_timestamp = 0
     answered = False
+
     def __init__(
             self,
             featurizer: Optional[TrackerFeaturizer] = None,
@@ -124,7 +125,7 @@ class TestPolicy(Policy):
             **kwargs: Any,
     ) -> PolicyPrediction:
         if self.answered:
-            self.answered= False
+            self.answered = False
             return self._prediction(confidence_scores_for("action_listen", 1.0, domain))
         intent = tracker.latest_message.intent.get('name')
         for s in self.usertype:
@@ -139,14 +140,13 @@ class TestPolicy(Policy):
         print(self.learning_style)
         print('')
         print(self.usertype)
-        response = 'utter_' + self.learning_style+'_' + str(tracker.slots.get('tema').value)
+        response = 'utter_' + self.learning_style + '_' + str(tracker.slots.get('tema').value)
         self.answered = True
-        #print('Respuesta del bot a los: '+str(self.last_action_timestamp))
-        #print(tracker.latest_message.parse_data)
-        #print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['time_stamp'])
-        #self.last_action_timestamp = datetime.now()       
+        # print('Respuesta del bot a los: '+str(self.last_action_timestamp))
+        # print(tracker.latest_message.parse_data)
+        # print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['time_stamp'])
+        # self.last_action_timestamp = datetime.now()
         return self._prediction(confidence_scores_for(response, 1.0, domain))
-
 
     def _metadata(self) -> Dict[Text, Any]:
         return {
