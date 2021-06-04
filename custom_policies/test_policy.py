@@ -24,6 +24,8 @@ from rasa.shared.core.generator import TrackerWithCachedStates
 from rasa.shared.utils.io import is_logging_disabled
 from rasa.core.constants import MEMOIZATION_POLICY_PRIORITY
 
+from custom_policies.profiles_policy.secuential import Secuential
+
 logger = logging.getLogger(__name__)
 
 # temporary constants to support back compatibility
@@ -49,6 +51,8 @@ def count_intents_from_stories(s, story_intents):
 class TestPolicy(Policy):
     last_action_timestamp = 0
     answered = False
+
+    learning_style_answers = {"secuencial": Secuential(None)}
 
     def __init__(
             self,
@@ -140,7 +144,7 @@ class TestPolicy(Policy):
         print(self.learning_style)
         print('')
         print(self.usertype)
-        response = 'utter_' + self.learning_style + '_' + str(tracker.slots.get('tema').value)
+        response = self.learning_style_answers[self.learning_style].answer(tracker, domain, interpreter)
         self.answered = True
         # print('Respuesta del bot a los: '+str(self.last_action_timestamp))
         # print(tracker.latest_message.parse_data)

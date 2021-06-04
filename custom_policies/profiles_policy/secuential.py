@@ -7,11 +7,10 @@ from rasa.shared.nlu.interpreter import NaturalLanguageInterpreter
 
 from custom_policies.profiles_policy.profile import Profile
 class Secuential(Profile):
-    answersQA = {}
+    answersQA = {"scrum": "utter_scrum", "framework": "utter_framework"}
 
     def __init__(self,
-                 domain: Domain):
-        json.load(open(''))
+                 domain: Domain): None
 
     def answer(self,
                tracker: DialogueStateTracker,
@@ -19,6 +18,8 @@ class Secuential(Profile):
                interpreter: NaturalLanguageInterpreter,
                **kwargs: Any,
                ) -> List[float]:
-        if intent = preguntar
-            answersQA.get(lastmessage.entity)
+            if tracker.latest_message.intent['name'] == 'preguntar_tema':
+                #aca estoy popeando la entidad, si se detecta mas de una entidad
+                #probablemente esto no anda
+                return self.answersQA[tracker.latest_message.entities.pop(0)['value']]
 

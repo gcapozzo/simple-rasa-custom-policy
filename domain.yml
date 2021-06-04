@@ -9,10 +9,11 @@ intents:
 - avanzar_conversacion
 - poseer_conocimiento
 - pedir_tema
+- preguntar_tema
 
 entities: 
 - tema
-
+- tema_scrum
 slots: 
   tema:
     type: text
@@ -40,6 +41,10 @@ responses:
   - text: "explicacion secuencial del tema 4"
   utter_secuencial_tema5:
   - text: "explicacion secuencial del tema 5"
+  utter_scrum:
+  - text: "esto es scrum"
+  utter_framework:
+  - text: "esto es framework"
 config:
   store_entities_as_slots: true
 session_config:

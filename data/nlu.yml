@@ -48,3 +48,8 @@ nlu:
   examples: |
     - contame de [tema4](tema)
     - explicame que es [tema5](tema)
+
+- intent: preguntar_tema
+  examples: |
+    - que es [scrum](tema_scrum)
+    - que es [framework](tema_scrum)
