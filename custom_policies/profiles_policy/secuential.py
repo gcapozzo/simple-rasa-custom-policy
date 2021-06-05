@@ -21,7 +21,7 @@ class Secuential(Profile):
                  ):
         self.tema = topic
 
-        dialogflow = json.load(open("/home/gianluca/Desktop/facultad/MicroDiseno/test_bot/custom_policies/data"
+        dialogflow = json.load(open("/home/tomas/Escritorio/rasaS/simple-rasa-custom-policy/custom_policies/data"
                                     "/secuential_dialogflow.json"))
         for subtopic in dialogflow['scrum']:
             self.subtopics.append(Subtopic(subtopic['topic_name'], subtopic['explanation'], subtopic['examples']))
@@ -45,16 +45,16 @@ class Secuential(Profile):
             return self.answersQA[tracker.latest_message.entities.pop(0)['value']]
         else:
             if tracker.latest_message.intent['name'] == 'avanzar_conversacion':
-                print(self.tema_actual)
-                print(self.subtopics[0].explanation['1'])
                 index_actual = self.subtopics.index(self.tema_actual)
-                self.tema_actual = self.subtopics[index_actual]
+                self.tema_actual = self.subtopics[index_actual+1]
+                respuesta = self.tema_actual.explanation[str(self.tema_actual.last_explanation)]
                 self.tema_actual.last_explanation += 1
-                return self.tema_actual.explanation[str(self.tema_actual.last_explanation)]
+                return respuesta
             else:
                 if tracker.latest_message.intent['name'] == 'ejemplo':
                     self.tema_actual.last_example += 1
                     return self.tema_actual.examples[self.tema_actual.last_example]
                 else:
+                    respuesta = self.tema_actual.explanation[str(self.tema_actual.last_explanation)]
                     self.tema_actual.last_explanation += 1
-                    return self.tema_actual.explanation[self.tema_actual.last_explanation]
+                    return respuesta

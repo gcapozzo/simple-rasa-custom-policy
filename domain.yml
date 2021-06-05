@@ -48,6 +48,8 @@ responses:
 
   utter_product_backlog:
   - text: "El Product Backlog es un inventario que contiene cualquier tipo de trabajo que haya que hacer en el producto: requerimientos, casos de uso, tareas y dependencias. Es la principal fuente de información sobre el producto en Scrum, una lista, en cualquier formato, que contiene todos los requerimientos que necesitamos implementar en el producto. El Product Backlog debe ser gestionado en exclusiva por el Product Owner."
+  utter_product_backlog_2:
+  - text: "El Product Backlog hace esto en realidad"
   utter_product_owner:
   - text: "El Product Owner es la persona dentro del marco de trabajo que descubre las necesidades de los clientes y busca soluciones a las mismas. Para ello utiliza el Product Backlog, donde se detalla qué debe realizarse para cubrir esa necesidad. Cada elemento del Product Backlog es un aporte de valor completo para el cliente.  El Product Owner es un perfil con capacidad de visión de negocio, así como habilidades sociales para la entrevista; como puede ser el uso de preguntas abiertas, la empatía y la reformulación. Es un rol que está muy pegado al negocio a través de los clientes o a personas que tienen relación con ellos."
   utter_epica:

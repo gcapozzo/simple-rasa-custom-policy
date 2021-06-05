@@ -3,7 +3,7 @@
       "topic_name": "product_backlog",
       "explanation": {
         "1": "utter_product_backlog",
-        "2": "utter_product_owner",
+        "2": "utter_product_backlog_2",
         "3": "utter_epica"
       },
       "examples": {
