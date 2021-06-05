@@ -45,6 +45,36 @@ responses:
   - text: "esto es scrum"
   utter_framework:
   - text: "esto es framework"
+
+  utter_product_backlog:
+  - text: "El Product Backlog es un inventario que contiene cualquier tipo de trabajo que haya que hacer en el producto: requerimientos, casos de uso, tareas y dependencias. Es la principal fuente de información sobre el producto en Scrum, una lista, en cualquier formato, que contiene todos los requerimientos que necesitamos implementar en el producto. El Product Backlog debe ser gestionado en exclusiva por el Product Owner."
+  utter_product_owner:
+  - text: "El Product Owner es la persona dentro del marco de trabajo que descubre las necesidades de los clientes y busca soluciones a las mismas. Para ello utiliza el Product Backlog, donde se detalla qué debe realizarse para cubrir esa necesidad. Cada elemento del Product Backlog es un aporte de valor completo para el cliente.  El Product Owner es un perfil con capacidad de visión de negocio, así como habilidades sociales para la entrevista; como puede ser el uso de preguntas abiertas, la empatía y la reformulación. Es un rol que está muy pegado al negocio a través de los clientes o a personas que tienen relación con ellos."
+  utter_epica:
+  - text: "Una Épica es un conjunto de trabajo grande que puede dividirse en historias de usuario en función de las necesidades o solicitudes de los clientes o usuarios finales. Implementar una épica suele llevar dos o más sprints."
+  - text: "Una épica es una historia de usuario que no puede ser entregada tal y como se ha definido dentro de una sola iteración, o que es suficientemente grande como para ser partida en historias de usuario más pequeñas."
+
+  utter_scrum_master:
+  - text: "El Scrum Master tiene dos funciones principales dentro del marco de trabajo: \n
+  1. Gestionar el proceso Scrum: el Scrum Master se encarga de gestionar y asegurar que el proceso Scrum se lleva a cabo correctamente, así como de facilitar la ejecución del proceso y sus mecánicas. \n
+  2. Eliminar impedimentos: esta función del Scrum Master indica la necesidad de ayudar a eliminar progresiva y constantemente impedimentos que van surgiendo en la organización y que afectan a su capacidad para entregar valor, así como a la integridad de esta metodología. \n
+Además, se encarga de las labores de mentoring y formación, coaching y de facilitar reuniones y eventos si es necesario."
+  utter_sprint_backlog:
+  - text: "Este artefacto es un elemento para visualizar el trabajo a realizar durante cada Sprint y está gestionado por el equipo de desarrollo. Su propósito es mantener la transparencia dentro del desarrollo, actualizándolo durante toda la iteración especialmente a través de los daily Scrums."
+  utter_diseño_backlog:
+  - text: "Para el diseño del backlog se siguen lo siguientes pasos: \n
+  1) En primer lugar, se definen los temas. Estos deben ser generales y cada uno de ellos puede ser parte de distintas iniciativas.\n
+  2) Se definen las iniciativas u objetivos comunes relacionado con un tema. Puede ser que una misma iniciativa comparta dos temas. \n
+  3) Se definen todas las épicas que se requieren para perseguir ese objetivo en común que hemos marcado en el tema. Este proceso se realiza en conjunto con los requerimientos de los clientes.\n
+  4) Se divide cada épica en historias de usuarios. En este paso, es fundamental la colaboración del cliente, es necesario ponerse en su lugar para adaptarse a lo que el quiere hacer, tal y como él mismo lo solicite. \n
+  5) Se dividen a su vez las historias de usuario definidas en el paso anterior en tareas o actividades para ejecutarlas. El equipo de desarrollo seguirá estas tareas, por ejemplo, en un Scrum Board. Se seleccionan así las tareas del backlog para ese Sprint o iteración. Cada vez que el equipo de desarrollo completa una historia, se realiza un incremento al producto final."
+  utter_user_story:
+  - text: "Una historia de usuario es la unidad de trabajo más pequeña en un marco ágil. Es un objetivo final, no una función, expresado desde la perspectiva del usuario final o cliente. Representa una necesidad de negocio que puede ser implementada en un sprint y aporta valor al producto. Al final del Sprint la historia añade una nueva funcionalidad o característica al producto y puede ser candidata para pasar a producción. Estos elementos componen una Épica y, a su vez, una historia esta compuesta por tareas técnicas."
+  - text: "Una historia de usuario es la descripción funcional utilizada en las metodologías ágiles para especificar el desarrollo de una característica. Estas definen lo que se debe construir en el proyecto de software, tienen una prioridad asociada definida por el cliente de manera de indicar cuales son las más importantes para el resultado final, serán divididas en tareas y su tiempo será estimado por los desarrolladores."
+  utter_tarea:
+  - text: "Las tareas son elementos técnicos necesarios para que una Historia de Usuario se transforme en un incremento del producto. Las historias de usuario se descomponen en tareas para gestionar y seguir el avance de su ejecución. Normalmente durante la reunión de Sprint Planning, el equipo de desarrollo se identifica y genera estas tareas técnica."
+
+
 config:
   store_entities_as_slots: true
 session_config:
