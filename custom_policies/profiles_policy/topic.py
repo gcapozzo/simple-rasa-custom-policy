@@ -1,25 +1,16 @@
+from custom_policies.profiles_policy.subtopic import Subtopic
 from typing import List
 
 
 class Topic:
     topic_name = ''
-    subtopics = ['Topic']
-    explanation = {
-        1: "more_abstract",
-        2: "more_detailed"
-    }
-    examples = {
-        1: "example 1",
-        2: "example 2"
-    }
-    required_concepts = ['Topic']
-    history = {
-        "last_explanation": 0,
-        "last_example": 0
-    }
+    subtopics = [Subtopic]
+    last_subtopic = 0
+    
 
     def __init__(self,
                  topic_name: str,
-                 subtopics: List['Topic']
+                 subtopics: List[Subtopic]
                  ):
         self.topic_name = topic_name
+        self.subtopics = subtopics
