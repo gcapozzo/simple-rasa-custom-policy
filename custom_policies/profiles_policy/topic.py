@@ -6,7 +6,6 @@ class Topic:
     topic_name = ''
     subtopics = [Subtopic]
     last_subtopic = 0
-    
 
     def __init__(self,
                  topic_name: str,

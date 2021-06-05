@@ -1,0 +1,30 @@
+{
+  "topics": [{
+    "topic_name": "tema1",
+    "subtopics": [{
+      "topic_name": "subtema1 del tema 1",
+      "explanation": {
+        "1": "subtema1 del tema 1 level 1",
+        "2": "subtema1 del tema 1 level 2"
+      },
+      "examples": {
+        "1": "example del tema 1 subtema1 1",
+        "2": "example del tema 1 subtema1 2"
+      }
+    }]
+  },
+    {
+    "topic_name": "tema2",
+    "subtopics": [{
+      "topic_name": "subtema1 del tema 2",
+      "explanation": {
+        "1": "subtema1 del tema 2 level 1",
+        "2": "subtema1 del tema 2 level 2"
+      },
+      "examples": {
+        "1": "example del tema 2 subtema1 1",
+        "2": "example del tema 2 subtema1 2"
+      }
+    }]
+  }]
+}

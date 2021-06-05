@@ -150,6 +150,7 @@ class TestPolicy(Policy):
         # print(tracker.latest_message.parse_data)
         # print('Mensaje del usuario a los: '+tracker.latest_message.parse_data['time_stamp'])
         # self.last_action_timestamp = datetime.now()
+        print("andaawa"+response)
         return self._prediction(confidence_scores_for(response, 1.0, domain))
 
     def _metadata(self) -> Dict[Text, Any]:
