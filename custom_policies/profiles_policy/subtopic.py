@@ -11,8 +11,8 @@ class Subtopic:
         1: "example 1",
         2: "example 2"
     }
-    last_explanation = 1
-    last_example = 1
+    last_explanation = 0
+    last_example = 0
 
     def __init__(self,
                  topic_name: str,

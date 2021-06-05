@@ -13,7 +13,6 @@ from custom_policies.profiles_policy.profile import Profile
 class Secuential(Profile):
     answersQA = {"scrum": "utter_scrum", "framework": "utter_framework"}
     tema_actual = Subtopic
-    topics = []
     subtopics = []
 
     def __init__(self,
@@ -24,17 +23,13 @@ class Secuential(Profile):
 
         dialogflow = json.load(open("/home/gianluca/Desktop/facultad/MicroDiseno/test_bot/custom_policies/data"
                                     "/secuential_dialogflow.json"))
-        subtopics = []
-        for topic in dialogflow["topics"]:
-            for subtopic in topic['subtopics']:
-                subtopics.append(Subtopic(subtopic['topic_name'], subtopic['explanation'], subtopic['examples']))
-                topic_name = str(topic['topic_name'])
-                self.topics.append(Topic(topic_name, subtopics))
-                subtopics = []
+        for subtopic in dialogflow['scrum']:
+            self.subtopics.append(Subtopic(subtopic['topic_name'], subtopic['explanation'], subtopic['examples']))
+            print(self.subtopics[0].explanation)
         if tema_actual is not None:
             self.tema_actual = tema_actual
         else:
-            self.tema_actual = self.topics[0].subtopics[0]
+            self.tema_actual = self.subtopics[0]
 
     def answer(self,
                tracker: DialogueStateTracker,
@@ -51,10 +46,11 @@ class Secuential(Profile):
         else:
             if tracker.latest_message.intent['name'] == 'avanzar_conversacion':
                 print(self.tema_actual)
-                print(self.subtopics)
-                self.tema_actual = self.tema_actual.subtopics[self.tema_actual.last_subtopic + 1]
+                print(self.subtopics[0].explanation['1'])
+                index_actual = self.subtopics.index(self.tema_actual)
+                self.tema_actual = self.subtopics[index_actual]
                 self.tema_actual.last_explanation += 1
-                return self.tema_actual.explanation[self.tema_actual.last_explanation]
+                return self.tema_actual.explanation[str(self.tema_actual.last_explanation)]
             else:
                 if tracker.latest_message.intent['name'] == 'ejemplo':
                     self.tema_actual.last_example += 1
